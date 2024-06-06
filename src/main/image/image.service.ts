@@ -23,7 +23,6 @@ export class ImageService {
         // console.log(`File '${imageName}' not found. Unable to delete.`);
       }
     } catch (error) {
-      console.error('Error deleting file:', error);
     }
   }
 }
