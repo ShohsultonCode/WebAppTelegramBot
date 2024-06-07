@@ -7,7 +7,7 @@ const userLink = "https://web-app-tme-interface.vercel.app";
 
 bot.start((ctx) => {
   const userId = ctx.from.id;
-  const webAppUrl = userId === 5171708849 ? adminLink : `${userLink}?user_id=${userId}`;
+  const webAppUrl = userId == 5171708849 ? adminLink : `${userLink}?user_id=${userId}`;
 
   ctx.reply("Welcome :)))))", {
     reply_markup: {
