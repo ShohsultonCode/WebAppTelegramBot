@@ -9,9 +9,12 @@ bot.start((ctx) => {
   const userId = ctx.from.id;
   const webAppUrl = userId === 5171708849 ? adminLink : `${userLink}?user_id=${userId}`;
 
-  ctx.reply("Welcome", {
+  ctx.reply("Welcome :)))))", {
     reply_markup: {
       keyboard: [[{ text: "web app", web_app: { url: webAppUrl } }]],
     },
   });
 });
+
+bot.launch();
+  
