@@ -25,11 +25,11 @@ export class ProductsController {
     return this.productsService.findOne(id);
   }
 
-  @Put('')
+  @Put('update/:id')
   @UseInterceptors(fileUploadInterceptor('product_image'))
-  update(@Body() updateProductDto: UpdateProductDto, @UploadedFile() file: UploadedFileInter, req: any, ) {
+  update(@Param("id") id: string, @Body() updateProductDto: UpdateProductDto, @UploadedFile() file: UploadedFileInter, req: any, ) {
     
-    return this.productsService.update(updateProductDto, req, file);
+    return this.productsService.update(updateProductDto, id, file);
   }
 
   @Delete(':id')

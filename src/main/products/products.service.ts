@@ -70,15 +70,15 @@ export class ProductsService {
 
   async update(
     body: UpdateProductDto,
-    req: any,
+    id: string,
     file: UploadedFileInter,
   ): Promise<Object> {
     
-    const {product_name, product_description, product_category, product_price, product_id} = body;
-   
-    if (!product_id) {
-      throw new NotFoundException("Send fuckin product_id not found");
-      
+    const {product_name, product_description, product_category, product_price} = body;
+
+    
+    if (!id) {
+      throw new NotFoundException("Send fucking id of product");
     }
     if (product_category) {
       const findCategory = await this.Categories.findById(product_category);   
@@ -88,7 +88,7 @@ export class ProductsService {
     }
 
   
-    const findProduct = await this.Products.findById(product_id);
+    const findProduct = await this.Products.findById(id);
     
     if (!findProduct ) {
       throw new NotFoundException("Product not found");
@@ -105,7 +105,7 @@ export class ProductsService {
       });
 
 
-      if (checkNameOfProduct && checkNameOfProduct._id.toString() !== product_id) {
+      if (checkNameOfProduct && checkNameOfProduct._id.toString() !== id) {
         throw new BadRequestException(
           'This product name is already created, please change the name!',
         );
@@ -120,7 +120,7 @@ export class ProductsService {
       product_category:product_category || findProduct.product_category
     };
 
-    const updatedproduct = await this.Products.findByIdAndUpdate(product_id, productTemplate, { new: true });
+    const updatedproduct = await this.Products.findByIdAndUpdate(id, productTemplate, { new: true });
 
     if (!updatedproduct) {
       throw new NotFoundException("Failed to update product");

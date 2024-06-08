@@ -1,9 +1,6 @@
 import { IsString, IsNotEmpty, IsMongoId, IsOptional } from 'class-validator';
 
 export class UpdateProductDto {
-  @IsNotEmpty()
-  product_id: string;
-
   @IsOptional()
   product_name: string;
 
