@@ -8,8 +8,6 @@ export enum UserRole {
 }
 export interface User extends Document {
   id: string;
-  user_firstname: string;
-  user_lastname: string;
   user_telegram_id: string;
 }
 export interface Category extends Document {
@@ -27,6 +25,15 @@ export interface Product extends Document {
   product_category: mongoose.Schema.Types.ObjectId;
   product_price: string;
   product_image: string;
+}
+
+
+
+export interface Order extends Document {
+  id: string;
+  order_user_id: mongoose.Schema.Types.ObjectId;
+  order_product_id: mongoose.Schema.Types.ObjectId;
+  order_amount_price: string
 }
 
 export default interface UploadedFileInter {

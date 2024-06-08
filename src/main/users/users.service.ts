@@ -10,27 +10,27 @@ export class UsersService {
     @InjectModel('Products') private readonly Products: Model<Product>,
   ) { }
 
-  async getProfile(req: any): Promise<Object> {
-    try {
-      const user = await this.Users.findById(req.user.id);
-      if (!user) {
-        throw new NotFoundException('User not found!');
-      }
+  // async getProfile(req: any): Promise<Object> {
+  //   try {
+  //     const user = await this.Users.findById(req.user.id);
+  //     if (!user) {
+  //       throw new NotFoundException('User not found!');
+  //     }
 
-      const { user_firstname, user_lastname } = user;
+  //     const { user_firstname, user_lastname } = user;
 
-      return {
-        message: 'Success',
-        statusCode: 200,
-        data: {
-          user_firstname,
-          user_lastname,
-        }
-      };
-    } catch (error) {
-      throw new BadRequestException(error.message);
-    }
-  }
+  //     return {
+  //       message: 'Success',
+  //       statusCode: 200,
+  //       data: {
+  //         user_firstname,
+  //         user_lastname,
+  //       }
+  //     };
+  //   } catch (error) {
+  //     throw new BadRequestException(error.message);
+  //   }
+  // }
 
 
 

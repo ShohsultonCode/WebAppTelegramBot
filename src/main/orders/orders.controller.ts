@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { OrdersService } from './orders.service';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
+import { OrdersService } from './orders.service';
+import { ApiTags } from '@nestjs/swagger';
 
+
+@ApiTags('orders')
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
@@ -18,8 +20,8 @@ export class OrdersController {
     return this.ordersService.findOne(id);
   }
 
-  @Post()
-  create(@Body() CreateOrderDto: CreateOrderDto) {
+  @Post("create")
+  async create(@Body() CreateOrderDto: CreateOrderDto):Promise<Object> {
     return this.ordersService.create(CreateOrderDto);
   }
 
