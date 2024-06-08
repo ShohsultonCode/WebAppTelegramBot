@@ -39,7 +39,6 @@ export class OrdersService {
     })
 
 
-    await createOrder.save();
 
     return { message: "Success", statusCode: 200 }
   }
