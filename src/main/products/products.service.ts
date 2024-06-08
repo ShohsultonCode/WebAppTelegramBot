@@ -76,6 +76,10 @@ export class ProductsService {
     
     const {product_name, product_description, product_category, product_price, product_id} = body;
    
+    if (!product_id) {
+      throw new NotFoundException("Send fuckin product_id not found");
+      
+    }
     if (product_category) {
       const findCategory = await this.Categories.findById(product_category);   
       if (!findCategory ) {
