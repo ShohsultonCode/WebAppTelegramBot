@@ -20,7 +20,7 @@ export class ImageService {
         await fs.promises.unlink(imagePath);
         // console.log('File deleted successfully');
       } else {
-        // console.log(`File '${imageName}' not found. Unable to delete.`);
+        console.log(`File '${imageName}' not found. Unable to delete.`);
       }
     } catch (error) {
     }

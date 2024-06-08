@@ -73,17 +73,22 @@ export class ProductsService {
     req: any,
     file: UploadedFileInter,
   ): Promise<Object> {
+    
     const {product_name, product_description, product_category, product_price, product_id} = body;
-
-    await checkId(product_category);
-
-    const findCategory = await this.Categories.findById(product_category);
-
-    const findProduct = await this.Products.findById(product_id);
-    if (!findCategory || findProduct ) {
-      throw new NotFoundException("Category or Product not found");
+   
+    if (product_category) {
+      const findCategory = await this.Categories.findById(product_category);   
+      if (!findCategory ) {
+        throw new NotFoundException("Category not found");
+      }
     }
 
+  
+    const findProduct = await this.Products.findById(product_id);
+    
+    if (!findProduct ) {
+      throw new NotFoundException("Product not found");
+    }
     if (file && file.filename) {
       const imageNameToDelete = findProduct.product_image;
       await this.imageService.deleteImage(imageNameToDelete);
@@ -111,7 +116,7 @@ export class ProductsService {
       product_category:product_category || findProduct.product_category
     };
 
-    const updatedproduct = await this.Categories.findByIdAndUpdate(product_id, productTemplate, { new: true });
+    const updatedproduct = await this.Products.findByIdAndUpdate(product_id, productTemplate, { new: true });
 
     if (!updatedproduct) {
       throw new NotFoundException("Failed to update product");

@@ -1,21 +1,21 @@
-import { IsString, IsNotEmpty, IsMongoId } from 'class-validator';
+import { IsString, IsNotEmpty, IsMongoId, IsOptional } from 'class-validator';
 
 export class UpdateProductDto {
-  @IsString()
+  @IsNotEmpty()
   product_id: string;
 
-  @IsString()
+  @IsOptional()
   product_name: string;
 
-  @IsString()
+  @IsOptional()
   product_description: string;
 
-  @IsMongoId()
+  @IsOptional()
   product_category: string;
 
-  @IsString()
+  @IsOptional()
   product_price: string;
 
-  @IsString()
+  @IsOptional()
   product_image: string;
 }

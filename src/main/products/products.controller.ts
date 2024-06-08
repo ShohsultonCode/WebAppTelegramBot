@@ -26,8 +26,9 @@ export class ProductsController {
   }
 
   @Put('')
-  @UseInterceptors(fileUploadInterceptor('category_image'))
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto, @UploadedFile() file: UploadedFileInter, req: any, ) {
+  @UseInterceptors(fileUploadInterceptor('product_image'))
+  update(@Body() updateProductDto: UpdateProductDto, @UploadedFile() file: UploadedFileInter, req: any, ) {
+    
     return this.productsService.update(updateProductDto, req, file);
   }
 
