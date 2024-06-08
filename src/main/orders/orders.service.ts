@@ -14,60 +14,56 @@ export class OrdersService {
     @InjectModel('Orders') private readonly Orders: Model<Order>,
   ) { }
 
-  async create(createOrderDto: CreateOrderDto):Promise<Object > {
-    const { order_product_id, order_telegram_id} = createOrderDto;
+  async create(createOrderDto: CreateOrderDto): Promise<Object> {
+    const { order_product_id, order_telegram_id } = createOrderDto;
 
     await checkId(order_product_id)
     const findProduct = await this.Products.findById(order_product_id)
     if (!findProduct) {
-        throw new NotFoundException("Product not found")
+      throw new NotFoundException("Product not found")
     }
     const checkUser = await this.Users.findOne({
-      user_telegram_id:order_telegram_id
+      user_telegram_id: order_telegram_id
     })
     if (!checkUser) {
       const createUser = await new this.Users({
-        user_telegram_id:order_telegram_id
-    })
-
-    await createUser.save();
-
+        user_telegram_id: order_telegram_id
+        })
+      await createUser.save();
+    }
 
     const createOrder = await this.Orders.create({
-      order_user_id:createUser.id,
-      order_product_id:order_product_id,
-      order_amount_price:findProduct.product_price
+      order_user_id: checkUser.id,
+      order_product_id: order_product_id,
+      order_amount_price: findProduct.product_price
     })
 
 
     await createOrder.save();
 
-    return {message:"Success", statusCode:200}
-
-    }
-   
+    return { message: "Success", statusCode: 200 }
   }
 
-  async findAll():Promise<Object> {
+  async findAll(): Promise<Object> {
     const findAllOrders = await this.Orders.find().populate("order_user_id").populate("order_product_id").exec()
     return findAllOrders;
   }
 
-  async findMyOrders(body: MyOrderDto):Promise<Object> {
+  async findMyOrders(body: MyOrderDto): Promise<Object> {
 
-    const findUser = await this.Users.findOne({user_telegram_id:body.order_telegram_id})
-    
+    const findUser = await this.Users.findOne({ user_telegram_id: body.order_telegram_id })
+
     if (!findUser) {
       throw new NotFoundException("Order not found, You do not have fucking orders")
     }
-    const findAllOrders = await this.Orders.find({order_user_id:findUser._id}).populate("order_user_id").populate("order_product_id").exec()
+    const findAllOrders = await this.Orders.find({ order_user_id: findUser._id }).populate("order_user_id").populate("order_product_id").exec()
     return findAllOrders;
   }
 
-  async findOne(id: string):Promise<Object> {
+  async findOne(id: string): Promise<Object> {
     const findOne = await this.Orders.findById(id).populate("order_user_id").populate("order_product_id");
     if (!findOne) {
-        throw new NotFoundException("Order not found")
+      throw new NotFoundException("Order not found")
     }
     return findOne;
   }
