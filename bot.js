@@ -1,5 +1,5 @@
 const { Telegraf } = require("telegraf");
-const TOKEN = "Your_Telegram_Bot_Token"; // Replace with your Telegram bot token
+const TOKEN = "7333536576:AAEy1MtDXijiY1NYEEMCFv3L73cpnDbWrek"; // Replace with your Telegram bot token
 const bot = new Telegraf(TOKEN);
 
 const adminLink = "https://tg-app-admin.vercel.app";
