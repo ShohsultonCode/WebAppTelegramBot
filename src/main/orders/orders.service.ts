@@ -13,35 +13,35 @@ export class OrdersService {
     @InjectModel('Products') private readonly Products: Model<Product>,
     @InjectModel('Orders') private readonly Orders: Model<Order>,
   ) { }
-
   async create(createOrderDto: CreateOrderDto): Promise<Object> {
     const { order_product_id, order_telegram_id } = createOrderDto;
 
-    await checkId(order_product_id)
-    const findProduct = await this.Products.findById(order_product_id)
+    await checkId(order_product_id);
+    const findProduct = await this.Products.findById(order_product_id);
     if (!findProduct) {
-      throw new NotFoundException("Product not found")
+        throw new NotFoundException("Product not found");
     }
-    const checkUser = await this.Users.findOne({
-      user_telegram_id: order_telegram_id
-    })
-    if (!checkUser) {
-      const createUser = await new this.Users({
+
+    let checkUser = await this.Users.findOne({
         user_telegram_id: order_telegram_id
-        })
-      await createUser.save();
+    });
+
+    if (!checkUser) {
+        const createUser = new this.Users({
+            user_telegram_id: order_telegram_id
+        });
+        checkUser = await createUser.save();
     }
 
     const createOrder = await this.Orders.create({
-      order_user_id: checkUser.id,
-      order_product_id: order_product_id,
-      order_amount_price: findProduct.product_price
-    })
+        order_user_id: checkUser.id,
+        order_product_id: order_product_id,
+        order_amount_price: findProduct.product_price
+    });
 
+    return { message: "Success", statusCode: 200 };
+}
 
-
-    return { message: "Success", statusCode: 200 }
-  }
 
   async findAll(): Promise<Object> {
     const findAllOrders = await this.Orders.find().populate("order_user_id").populate("order_product_id").exec()
@@ -60,6 +60,7 @@ export class OrdersService {
   }
 
   async findOne(id: string): Promise<Object> {
+    await checkId(id)
     const findOne = await this.Orders.findById(id).populate("order_user_id").populate("order_product_id");
     if (!findOne) {
       throw new NotFoundException("Order not found")
