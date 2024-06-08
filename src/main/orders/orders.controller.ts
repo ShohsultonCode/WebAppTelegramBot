@@ -12,7 +12,7 @@ export class OrdersController {
 
 
 
-  @Get("my")
+  @Post("my")
   findMyOrders(@Body() body:MyOrderDto) {
     return this.ordersService.findMyOrders(body);
   }
