@@ -1,9 +1,9 @@
-import { IsString, IsNotEmpty, IsMongoId, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty, IsMongoId, IsOptional, IsNumber, IsArray } from 'class-validator';
 
 export class CreateOrderDto {
-  @IsString()
+  @IsArray()
   @IsNotEmpty()
-  order_product_id: string;
+  order_product_id: string
 
 
   @IsString()

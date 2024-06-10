@@ -28,7 +28,7 @@ export class OrdersController {
   }
 
   @Post("create")
-  async create(@Body() CreateOrderDto: CreateOrderDto):Promise<Object> {
+  async create(@Body() CreateOrderDto: CreateOrderDto[]):Promise<Object> {
     return this.ordersService.create(CreateOrderDto);
   }
 

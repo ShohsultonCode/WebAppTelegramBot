@@ -13,36 +13,39 @@ export class OrdersService {
     @InjectModel('Products') private readonly Products: Model<Product>,
     @InjectModel('Orders') private readonly Orders: Model<Order>,
   ) { }
-  async create(createOrderDto: CreateOrderDto): Promise<Object> {
-    const { order_product_id, order_telegram_id, order_count } = createOrderDto;
+  async create(createOrderDto: CreateOrderDto[]): Promise<Object> {
+    const results = [];
 
+    for (const dto of createOrderDto) {
+      const { order_telegram_id, order_product_id, order_count } = dto;
 
-    await checkId(order_product_id);
-    const findProduct = await this.Products.findById(order_product_id);
-    if (!findProduct) {
-        throw new NotFoundException("Product not found");
-    }
+      // Check if product exists
+      const findProduct = await this.Products.findById(order_product_id);
+      if (!findProduct) {
+        throw new NotFoundException(`Product with ID ${order_product_id} not found`);
+      }
 
-    let checkUser = await this.Users.findOne({
-        user_telegram_id: order_telegram_id
-    });
-
-    if (!checkUser) {
-        const createUser = new this.Users({
-            user_telegram_id: order_telegram_id
-        });
+      // Check if user exists, if not create a new one
+      let checkUser = await this.Users.findOne({ user_telegram_id: order_telegram_id });
+      if (!checkUser) {
+        const createUser = new this.Users({ user_telegram_id: order_telegram_id });
         checkUser = await createUser.save();
-    }
+      }
 
-    const createOrder = await this.Orders.create({
+      // Create order
+      const createOrder = await this.Orders.create({
         order_user_id: checkUser.id,
         order_product_id: order_product_id,
         order_amount_price: findProduct.product_price,
-        order_count:order_count
-    });
+        order_count: order_count
+      });
 
-    return { message: "Success", statusCode: 200 };
-}
+      await createOrder.save()
+      results.push({ product_id: order_product_id, message: 'Order created successfully' });
+    }
+
+    return { message: 'Success', statusCode: 200, data: results };
+  }
 
 
   async findAll(): Promise<Object> {
