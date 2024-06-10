@@ -14,7 +14,8 @@ export class OrdersService {
     @InjectModel('Orders') private readonly Orders: Model<Order>,
   ) { }
   async create(createOrderDto: CreateOrderDto): Promise<Object> {
-    const { order_product_id, order_telegram_id } = createOrderDto;
+    const { order_product_id, order_telegram_id, order_count } = createOrderDto;
+
 
     await checkId(order_product_id);
     const findProduct = await this.Products.findById(order_product_id);
@@ -36,7 +37,8 @@ export class OrdersService {
     const createOrder = await this.Orders.create({
         order_user_id: checkUser.id,
         order_product_id: order_product_id,
-        order_amount_price: findProduct.product_price
+        order_amount_price: findProduct.product_price,
+        order_count:order_count
     });
 
     return { message: "Success", statusCode: 200 };

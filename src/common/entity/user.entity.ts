@@ -33,7 +33,8 @@ export interface Order extends Document {
   id: string;
   order_user_id: mongoose.Schema.Types.ObjectId;
   order_product_id: mongoose.Schema.Types.ObjectId;
-  order_amount_price: string
+  order_amount_price: string;
+  order_count: number
 }
 
 export default interface UploadedFileInter {

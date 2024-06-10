@@ -5,9 +5,10 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductsService } from './products.service';
 import { ApiTags } from '@nestjs/swagger';
+import { AskProductDto } from './dto/ask.dto';
 
 
-@ApiTags('orders')
+@ApiTags('Products')
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
@@ -22,6 +23,13 @@ export class ProductsController {
   findAll() {
     return this.productsService.findAllCategories();
   }
+  
+  @Post("ask")
+  findAsk(@Body() productIds: string[], ) {
+    return this.productsService.findAskProducts(productIds);
+  }
+
+
 
   @Get(':id')
   findOne(@Param('id') id: string) {

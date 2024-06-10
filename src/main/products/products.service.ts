@@ -6,6 +6,7 @@ import { checkId } from 'src/utils/check.id';
 import { ImageService } from '../image/image.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { AskProductDto } from './dto/ask.dto';
 
 @Injectable()
 export class ProductsService {
@@ -57,6 +58,20 @@ export class ProductsService {
     const data = await this.Products.find().populate("product_category").exec()
     return { message: "Success", statusCode: 200, data: data }
   }
+
+  async findAskProducts(productIds: string[]): Promise<Object> {
+      const products = await this.Products
+        .find({ _id: { $in: productIds } })
+        .populate('product_category')
+        .exec();  
+
+        if (!products) {
+          throw new NotFoundException("Fuck ")
+        }
+
+      return { message: 'Success', statusCode: 200, data: products };
+}
+
 
   async findOne(id: string): Promise<Object> {
     await checkId(id)
