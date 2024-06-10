@@ -132,7 +132,8 @@ export class ProductsService {
       product_name: product_name || findProduct.product_name,
       product_description: product_description || findProduct.product_description,
       product_image: findProduct.product_image,
-      product_category:product_category || findProduct.product_category
+      product_category:product_category || findProduct.product_category,
+      product_price:product_price || findProduct.product_price
     };
 
     const updatedproduct = await this.Products.findByIdAndUpdate(id, productTemplate, { new: true });
